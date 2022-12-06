@@ -2,7 +2,6 @@ package redis
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	redisV8 "github.com/go-redis/redis/v8"
@@ -23,8 +22,8 @@ func InitRedisClient() {
 	RedisClient = redisV8.NewClient(opt)
 }
 
-func ListenRenderInRedis(callback func(string)) {
-	pubsub := RedisClient.Subscribe(context.Background(), "render")
+func ListenInRedis(channel string, callback func(string)) {
+	pubsub := RedisClient.Subscribe(context.Background(), channel)
 	defer pubsub.Close()
 
 	for {
@@ -33,7 +32,6 @@ func ListenRenderInRedis(callback func(string)) {
 			panic(err)
 		}
 
-		fmt.Println(msg.Payload)
 		callback(msg.Payload)
 	}
 }

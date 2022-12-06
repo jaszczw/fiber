@@ -27,7 +27,11 @@ func main() { // Load the contents of the .env file
 	redis.InitRedisClient()
 	app := fiber.New()
 
-	go redis.ListenRenderInRedis(func(requestId string) {
+	go redis.ListenInRedis("render", func(requestId string) {
+		horde.CheckImageStatusLoop(requestId)
+	})
+
+	go redis.ListenInRedis("performRender", func(requestId string) {
 		horde.CheckImageStatusLoop(requestId)
 	})
 
