@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	"github.com/jaszczw/fiber/pkg/horde"
@@ -23,10 +22,7 @@ func getPort() string {
 }
 
 func main() { // Load the contents of the .env file
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	godotenv.Load(".env")
 
 	redis.InitRedisClient()
 	app := fiber.New()
